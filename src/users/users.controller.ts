@@ -19,22 +19,24 @@ export class UsersController {
     async createUser(
         @Body()
         newUser: UserLoginDto
-    ) : Promise<UserLogin>{
+    ) : Promise<{token: string}|{message: string}>{
         const res =  await this.usersservice.create(newUser);
         if(!res){
             throw new UserAlreadyExistsException(newUser.userName);
-             
         }
         return res;
 
     }
-
-   
-    @Post('login')
-    login( @Request() req ): any{
-        return {};
+    @Get('login')
+    async postUserLogin(
+        @Query('userName')
+        username: string,
+        @Query('userPassword')
+        userpassword: string
+    ):Promise<{token: string}>{
+        const token = await this.usersservice.loginUser(username,userpassword);
+        return token;
     }
-
     @Get('show-userByName')
     async getUserByName(
         @Query('userName')
