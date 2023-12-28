@@ -18,7 +18,7 @@ export class UsersController {
     @Post('add-new-user')
     async createUser(
         @Body()
-        newUser: UserLoginDto
+        newUser: UserLogin
     ) : Promise<{token: string}|{message: string}>{
         const res =  await this.usersservice.create(newUser);
         if(!res){
